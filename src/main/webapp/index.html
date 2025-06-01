@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Голосование</title>
+    <meta charset="UTF-8">
+    <script>
+
+        function validateForm() {
+            const checkboxes = document.querySelectorAll('input[name="genre"]:checked');
+            const textarea = document.getElementById('myTextarea');
+            const value = textarea.value.trim()
+
+            if (checkboxes.length < 3 || checkboxes.length > 5) {
+                alert("Пожалуйста, выберите от 3 до 5 жанров!");
+                return false;
+            }
+            if (!value) {
+                alert('Поле не должно быть пустым!');
+                return false;
+            }
+            if (value.length > 500) {
+                alert('Текст не должен превышать 500 символов.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+<h1>Голосование</h1>
+
+<form action="vote" method="POST" onsubmit="return validateForm()">
+
+    <h2>Выберите лучшего исполнителя (один):</h2>
+
+    <input type="radio" name="artist" value="Taylor Swift" required> Taylor Swift<br>
+    <input type="radio" name="artist" value="The Weeknd"> The Weeknd<br>
+    <input type="radio" name="artist" value="Drake"> Drake<br>
+    <input type="radio" name="artist" value="Beyonce"> Beyonce<br>
+
+    <h2>Выберите 3-5 любимых жанров музыки:</h2>
+
+    <input type="checkbox" name="genre" value="Pop"> Поп</div><br>
+    <input type="checkbox" name="genre" value="Rock"> Рок</div><br>
+    <input type="checkbox" name="genre" value="Hip Hop"> Хип-хоп</div><br>
+    <input type="checkbox" name="genre" value="Electronic"> Электроника</div><br>
+    <input type="checkbox" name="genre" value="Jazz"> Джаз</div><br>
+    <input type="checkbox" name="genre" value="Classical"> Классика</div><br>
+    <input type="checkbox" name="genre" value="Country"> Кантри</div><br>
+    <input type="checkbox" name="genre" value="Reggae"> Регги</div><br>
+    <input type="checkbox" name="genre" value="Metal"> Метал</div><br>
+    <input type="checkbox" name="genre" value="Blues"> Блюз</div><br>
+
+
+    <h2>О себе:</h2>
+    <textarea  id="myTextarea" name="about" rows="3" cols="40"></textarea><br>
+
+    <input type="submit" value="Проголосовать">
+</form>
+
+<p><a href="results">Посмотреть результаты</a></p>
+</body>
+</html>
