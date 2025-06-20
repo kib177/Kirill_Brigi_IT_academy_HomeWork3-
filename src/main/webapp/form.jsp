@@ -6,11 +6,31 @@
 <head>
     <title>Голосование</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .error { color: red; margin-bottom: 15px; padding: 10px; background-color: #ffeeee; border: 1px solid #ff9999; }
-        .section { margin-bottom: 20px; }
-        input[type="radio"], input[type="checkbox"] { margin-right: 8px; }
-        label { display: block; margin: 5px 0; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ffeeee;
+            border: 1px solid #ff9999;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>

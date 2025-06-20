@@ -3,7 +3,7 @@ package by.HomeWork.servlet;
 import by.HomeWork.model.Artists;
 import by.HomeWork.model.Genres;
 import by.HomeWork.model.VoteResult;
-import by.HomeWork.service.VoteService;
+import by.HomeWork.service.VoteServiceImpl;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,18 +14,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/vote")
-public class VoteServlet extends HttpServlet {
+public class VoteServletImpl extends HttpServlet {
     Artists artists = new Artists();
     Genres genres = new Genres();
+    private static final String FORM = "form.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("artists", artists.getArtists());
-        req.setAttribute("genres", genres.getGenres());
+        req.setAttribute("artists", artists.getValue());
+        req.setAttribute("genres", genres.getValue());
 
-        req.getRequestDispatcher("form.jsp").forward(req, resp);
+        req.getRequestDispatcher(FORM).forward(req, resp);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class VoteServlet extends HttpServlet {
 
         ServletContext context = getServletContext();
         VoteResult voteResult = (VoteResult) context.getAttribute("voteResult");
-        VoteService voteService = new VoteService(voteResult);
+        VoteServiceImpl voteServiceImpl = new VoteServiceImpl(voteResult);
 
         if (voteResult == null) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -42,10 +43,10 @@ public class VoteServlet extends HttpServlet {
             return;
         }
 
-        String error = voteService.processVote(req);
+        String error = voteServiceImpl.processVote(req);
         if (error != null) {
             req.setAttribute("error", error);
-            req.getRequestDispatcher("form.jsp").forward(req, resp);
+            req.getRequestDispatcher(FORM).forward(req, resp);
             return;
         }
         resp.sendRedirect("results");
