@@ -1,4 +1,4 @@
-package by.HomeWork.servlet;
+package by.HomeWork.controller;
 
 import by.HomeWork.model.VoteResult;
 import jakarta.servlet.ServletContext;
