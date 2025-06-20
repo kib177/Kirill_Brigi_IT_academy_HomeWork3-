@@ -9,7 +9,6 @@ import jakarta.servlet.annotation.WebListener;
 public class AppInit implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        // Создаем объект для хранения результатов
         VoteResult voteResult = new VoteResult();
         sce.getServletContext().setAttribute("voteResult", voteResult);
     }

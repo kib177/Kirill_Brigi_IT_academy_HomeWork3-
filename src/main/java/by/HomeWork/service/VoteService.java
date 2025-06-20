@@ -1,10 +1,8 @@
 package by.HomeWork.service;
 
 import by.HomeWork.model.VoteResult;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class VoteService {
@@ -14,7 +12,7 @@ public class VoteService {
         this.voteResult = voteResult;
     }
 
-    public String processVote(HttpServletRequest req) throws ServletException, IOException {
+    public String processVote(HttpServletRequest req) {
         String artist = req.getParameter("artist");
         String[] genres = req.getParameterValues("genre");
         String about = req.getParameter("about");
@@ -30,17 +28,14 @@ public class VoteService {
         }
 
         synchronized (voteResult) {
-            // Добавляем голос за исполнителя
             voteResult.addArtistVote(artist);
 
-            // Добавляем голоса за жанры
             for (String genre : genres) {
                 voteResult.addGenreVote(genre);
             }
-            // заполняем о себе и привязываем дату
             voteResult.addAboutVote(LocalDateTime.now(), about);
         }
 
-        return null; // Успешная обработка
+        return null;
     }
 }
