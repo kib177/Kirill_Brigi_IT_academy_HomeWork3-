@@ -1,5 +1,7 @@
 package by.HomeWork.servlet;
 
+import by.HomeWork.model.Artists;
+import by.HomeWork.model.Genres;
 import by.HomeWork.model.VoteResult;
 import by.HomeWork.service.VoteService;
 import jakarta.servlet.ServletContext;
@@ -8,31 +10,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @WebServlet("/vote")
 public class VoteServlet extends HttpServlet {
-
-    private final List<String> artists = Arrays.asList(
-            "Taylor Swift", "The Weeknd","Drake",
-            "Beyonce"
-    );
-
-    private final List<String> genres = Arrays.asList(
-            "Pop", "Rock", "Hip-Hop", "Electronic",
-            "Jazz", "Classical", "Country", "Reggae",
-            "Metal", "Blues"
-    );
+    Artists artists = new Artists();
+    Genres genres = new Genres();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // Передаем списки в JSP
-        req.setAttribute("artists", artists);
-        req.setAttribute("genres", genres);
+        req.setAttribute("artists", artists.getArtists());
+        req.setAttribute("genres", genres.getGenres());
 
         req.getRequestDispatcher("form.jsp").forward(req, resp);
     }
