@@ -1,8 +1,8 @@
 package by.HomeWork.controller;
 
+import by.HomeWork.connection.PostgreGet;
 import by.HomeWork.model.Artists;
 import by.HomeWork.model.Genres;
-import by.HomeWork.model.VoteResult;
 import by.HomeWork.service.VoteServiceImpl;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -22,9 +22,9 @@ public class VoteServletImpl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-
-        req.setAttribute("artists", artists.getValue());
-        req.setAttribute("genres", genres.getValue());
+        PostgreGet get = new PostgreGet();
+        req.setAttribute("artists", get.getArtists());
+        req.setAttribute("genres", get.getGenres());
 
         req.getRequestDispatcher(FORM).forward(req, resp);
     }
@@ -33,22 +33,15 @@ public class VoteServletImpl extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        ServletContext context = getServletContext();
-        VoteResult voteResult = (VoteResult) context.getAttribute("voteResult");
-        VoteServiceImpl voteServiceImpl = new VoteServiceImpl(voteResult);
-
-        if (voteResult == null) {
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Voting system is not initialized");
-            return;
-        }
-
-        String error = voteServiceImpl.processVote(req);
+        VoteServiceImpl v = new VoteServiceImpl();
+        String error = v.processVote(req);
         if (error != null) {
             req.setAttribute("error", error);
             req.getRequestDispatcher(FORM).forward(req, resp);
             return;
         }
         resp.sendRedirect("results");
+
+
     }
 }
