@@ -1,7 +1,6 @@
 package by.HomeWork.controller;
 
 import by.HomeWork.connection.PostgresVote;
-import by.HomeWork.service.ResultServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

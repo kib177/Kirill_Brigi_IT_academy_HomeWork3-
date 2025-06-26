@@ -1,5 +1,6 @@
 package by.HomeWork.service;
 
+import by.HomeWork.connection.PostgreGet;
 import by.HomeWork.connection.PostgresVote;
 import by.HomeWork.interfaces.IVoteService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,5 +29,11 @@ public class VoteServiceImpl implements IVoteService {
                 Arrays.asList(genres),
                 about);
         return null;
+    }
+
+    public static void getListAtristsGenres(HttpServletRequest req){
+        PostgreGet get = new PostgreGet();
+        req.setAttribute("artists", get.getArtists());
+        req.setAttribute("genres", get.getGenres());
     }
 }

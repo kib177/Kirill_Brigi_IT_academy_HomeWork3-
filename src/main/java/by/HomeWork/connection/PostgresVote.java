@@ -2,33 +2,34 @@ package by.HomeWork.connection;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static by.HomeWork.connection.JDBCconnection.connect;
 
 public class PostgresVote {
 
     public void saveVote(String artist, List<String> genres, String about) {
-        String sqlvote = "INSERT INTO votes (artist_id, vote_date, about)" +
+        String sqlvotes = "INSERT INTO votes (artist_id, vote_date, about)" +
                 "VALUES ((SELECT id_artist " +
                         "FROM artists " +
                         "WHERE name_artist = ?), ?, ?) " +
                 "RETURNING id_vote";
 
+        String sqlVoteGenre = "INSERT INTO vote_genres (vote_id, genre_id)" +
+                "VALUES (?, (SELECT id_genre " +
+                "FROM genres " +
+                "WHERE name_genre = ?))";
+
         try (Connection conn = connect();
-             PreparedStatement voteStmt = conn.prepareStatement(sqlvote);
-             PreparedStatement genreStmt = conn.prepareStatement(
-                     "INSERT INTO vote_genres (vote_id, genre_id)" +
-                     "VALUES (?, (SELECT id_genre " +
-                                 "FROM genres " +
-                                 "WHERE name_genre = ?))")) {
+             PreparedStatement voteStmt = conn.prepareStatement(sqlvotes);
+             PreparedStatement genreStmt = conn.prepareStatement(sqlVoteGenre)) {
 
             // Сохраняем основной голос
             voteStmt.setString(1, artist);
-            voteStmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            voteStmt.setTimestamp(2,
+                    Timestamp.valueOf(LocalDateTime.now()));
             voteStmt.setString(3, about);
 
             ResultSet rs = voteStmt.executeQuery();
@@ -50,17 +51,20 @@ public class PostgresVote {
     }
 
 
-    public Map<String, AtomicInteger> getArtistResults() {
-        Map<String, AtomicInteger> results = new HashMap<>();
+    public Map<String, Integer> getArtistResults() {
+        Map<String, Integer> results = new HashMap<>();
         String sql = "SELECT a.name_artist, COUNT(v.id_vote) as votes " +
                      "FROM artists a " +
                      "LEFT JOIN votes v ON a.id_artist = v.artist_id " +
                      "GROUP BY a.name_artist";
 
-        try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                results.put(rs.getString("name_artist"), new AtomicInteger(rs.getInt("votes")));
+                results.put(rs.getString("name_artist"),
+                        rs.getInt("votes"));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException("Failed to get artist results", e);
@@ -68,8 +72,8 @@ public class PostgresVote {
         return results;
     }
 
-    public Map<String, AtomicInteger> getGenreResults() {
-        Map<String, AtomicInteger> results = new HashMap<>();
+    public Map<String, Integer> getGenreResults() {
+        Map<String, Integer> results = new HashMap<>();
         String sqlGenre = "SELECT g.name_genre, COUNT(vg.vote_id) as votes " +
                      "FROM genres g " +
                      "LEFT JOIN vote_genres vg ON g.id_genre = vg.genre_id " +
@@ -80,14 +84,14 @@ public class PostgresVote {
              ResultSet rs = stmt.executeQuery(sqlGenre)) {
 
             while (rs.next()) {
-                results.put(rs.getString("name_genre"), new AtomicInteger(rs.getInt("votes")));
+                results.put(rs.getString("name_genre"),
+                        rs.getInt("votes"));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException("Failed to get genre results", e);
         }
         return results;
     }
-
 
     public Map<LocalDateTime, String> getAboutResults() {
         Map<LocalDateTime, String> results = new HashMap<>();
@@ -100,7 +104,9 @@ public class PostgresVote {
              ResultSet rs = stmt.executeQuery(sqlAbout)) {
 
             while (rs.next()) {
-                results.put(rs.getTimestamp("vote_date").toLocalDateTime(), rs.getString("about"));
+                results.put(
+                        rs.getTimestamp("vote_date").toLocalDateTime(),
+                        rs.getString("about"));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException("Failed to get about results", e);
