@@ -1,5 +1,6 @@
 package by.HomeWork.connection.modelDAO;
 
+import by.HomeWork.connection.modelDAO.api.IArtistsDAO;
 import by.HomeWork.connection.modelDAO.api.IgetListForVoteDAO;
 
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static by.HomeWork.connection.connectDB.JDBCconnection.*;
 
-public class artistListForVoteDAO implements IgetListForVoteDAO {
+public class artistListForVoteDAO implements IArtistsDAO {
     List<String> artists = new ArrayList<>();
 
     @Override

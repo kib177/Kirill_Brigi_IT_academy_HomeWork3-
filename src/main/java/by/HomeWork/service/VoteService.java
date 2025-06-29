@@ -1,25 +1,19 @@
 package by.HomeWork.service;
 
-import by.HomeWork.connection.modelDAO.api.IArtistDAO;
+import by.HomeWork.connection.modelDAO.SaveVoteDAO;
+import by.HomeWork.connection.modelDAO.api.IArtistsDAO;
 import by.HomeWork.connection.modelDAO.api.IGenreDAO;
 import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
+import by.HomeWork.connection.modelDAO.api.IgetListForVoteDAO;
+import by.HomeWork.connection.modelDAO.artistListForVoteDAO;
+import by.HomeWork.connection.modelDAO.genresListForVoteDAO;
 import by.HomeWork.service.api.IVoteService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Arrays;
 
 public class VoteService implements IVoteService {
-    private final ISaveVoteDAO saveVoteDAO;
-    private final IArtistDAO artistDAO;
-    private final IGenreDAO genreDAO;
-
-    public VoteService(ISaveVoteDAO saveVoteDAO,
-                       IArtistDAO artistDAO,
-                       IGenreDAO genreDAO) {
-        this.saveVoteDAO = saveVoteDAO;
-        this.artistDAO = artistDAO;
-        this.genreDAO = genreDAO;
-    }
+    ISaveVoteDAO saveVoteDAO = new SaveVoteDAO();
 
     @Override
     public String processVote(HttpServletRequest req){
@@ -48,7 +42,10 @@ public class VoteService implements IVoteService {
 
     @Override
     public void getListAtristsGenres(HttpServletRequest req){
-        req.setAttribute("artists", artistDAO.getListForVote());
-        req.setAttribute("genres", genreDAO.getListForVote());
+        IArtistsDAO getArtists = new artistListForVoteDAO();
+        IGenreDAO getGenres = new genresListForVoteDAO();
+
+        req.setAttribute("artists", getArtists.getListForVote());
+        req.setAttribute("genres", getGenres.getListForVote());
     }
 }
