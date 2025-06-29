@@ -1,12 +1,11 @@
 package by.HomeWork.service;
 
 import by.HomeWork.connection.modelDAO.SaveVoteDAO;
-import by.HomeWork.connection.modelDAO.api.IArtistsDAO;
-import by.HomeWork.connection.modelDAO.api.IGenreDAO;
+import by.HomeWork.connection.modelDAO.api.IArtistsListDAO;
+import by.HomeWork.connection.modelDAO.api.IGenreListDAO;
 import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
-import by.HomeWork.connection.modelDAO.api.IgetListForVoteDAO;
-import by.HomeWork.connection.modelDAO.artistListForVoteDAO;
-import by.HomeWork.connection.modelDAO.genresListForVoteDAO;
+import by.HomeWork.connection.modelDAO.ArtistListListDAO;
+import by.HomeWork.connection.modelDAO.GenresListDAO;
 import by.HomeWork.service.api.IVoteService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -41,11 +40,12 @@ public class VoteService implements IVoteService {
     }
 
     @Override
-    public void getListAtristsGenres(HttpServletRequest req){
-        IArtistsDAO getArtists = new artistListForVoteDAO();
-        IGenreDAO getGenres = new genresListForVoteDAO();
+    public void getList(HttpServletRequest req){
+        IArtistsListDAO getArtists = new ArtistListListDAO();
+        IGenreListDAO getGenres = new GenresListDAO();
 
-        req.setAttribute("artists", getArtists.getListForVote());
         req.setAttribute("genres", getGenres.getListForVote());
+        req.setAttribute("artists", getArtists.getListForVote());
     }
+
 }

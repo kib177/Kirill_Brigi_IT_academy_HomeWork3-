@@ -1,7 +1,6 @@
 package by.HomeWork.connection.modelDAO;
 
-import by.HomeWork.connection.modelDAO.api.IArtistsDAO;
-import by.HomeWork.connection.modelDAO.api.IgetListForVoteDAO;
+import by.HomeWork.connection.modelDAO.api.IArtistsListDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ import java.util.List;
 
 import static by.HomeWork.connection.connectDB.JDBCconnection.*;
 
-public class artistListForVoteDAO implements IArtistsDAO {
+public class ArtistListListDAO implements IArtistsListDAO {
     List<String> artists = new ArrayList<>();
 
     @Override
@@ -21,7 +20,8 @@ public class artistListForVoteDAO implements IArtistsDAO {
         Statement statement = getStatement(connection);
 
         try(ResultSet rs = statement.executeQuery(
-                "select * from artists order by name_artist ASC")) {
+                "select * from artists " +
+                        "order by name_artist ASC")) {
             while (rs.next()) {
                 String name = rs.getString("name_artist");
                 artists.add(name);
@@ -29,10 +29,6 @@ public class artistListForVoteDAO implements IArtistsDAO {
         }catch (SQLException e) {
             throw new RuntimeException("ResultSet getListForVote error", e);
         }
-
-        close(statement);
-        close(connection);
         return artists;
-
     }
 }

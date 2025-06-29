@@ -39,33 +39,5 @@ public class JDBCconnection {
             throw new RuntimeException("Statement error", e);
         }
     }
-
-    public static void close(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException("Error closing connection", e);
-            }
-        }
-    }
-
-    public static void close(Statement statement) {
-        if (statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                throw new RuntimeException("Error closing connection", e);
-            }
-        }
-    }
-
-    public static void rollbackConnection(Connection connection) {
-        try {
-            connection.rollback();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
 

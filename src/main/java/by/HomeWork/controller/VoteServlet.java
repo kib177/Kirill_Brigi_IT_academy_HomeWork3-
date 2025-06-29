@@ -19,7 +19,7 @@ public class VoteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        voteService.getListAtristsGenres(req);
+        voteService.getList(req);
         req.getRequestDispatcher(FORM).forward(req, resp);
     }
 
@@ -30,10 +30,12 @@ public class VoteServlet extends HttpServlet {
         String error = voteService.processVote(req);
         if (error != null) {
             req.setAttribute("error", error);
-            voteService.getListAtristsGenres(req);
+            voteService.getList(req);
             req.getRequestDispatcher(FORM).forward(req, resp);
             return;
         }
         resp.sendRedirect("results");
         }
+
+
 }

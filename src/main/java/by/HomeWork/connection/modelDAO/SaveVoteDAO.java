@@ -44,10 +44,7 @@ public class SaveVoteDAO implements ISaveVoteDAO {
             genreStmt.executeBatch();
             connection.commit();
         } catch (SQLException e) {
-            rollbackConnection(connection);
-            throw new RuntimeException("Failed to save vote", e);
+            throw new IllegalArgumentException("Failed to save vote", e);
         }
-
-        close(connection);
     }
 }
