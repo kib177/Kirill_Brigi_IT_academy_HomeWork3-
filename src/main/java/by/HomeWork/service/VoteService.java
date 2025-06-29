@@ -36,6 +36,10 @@ public class VoteService implements IVoteService {
             return "Пожалуйста, выберите от 3 до 5 жанров!";
         }
 
+        if (Arrays.stream(genres).anyMatch(String::isBlank)) {
+            return "Некорректные значения жанров";
+        }
+
         saveVoteDAO.saveVote(artist,
                 Arrays.asList(genres),
                 about);
