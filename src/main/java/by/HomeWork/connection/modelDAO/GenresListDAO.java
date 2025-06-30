@@ -2,10 +2,7 @@ package by.HomeWork.connection.modelDAO;
 
 import by.HomeWork.connection.modelDAO.api.IGenreListDAO;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +13,10 @@ public class GenresListDAO implements IGenreListDAO {
 
     @Override
     public List<String> getListForVote() {
-        Connection connection = getDatabaseConnection();
-        Statement statement = getStatement(connection);
-        try (ResultSet rs = statement.executeQuery(
-                "select * from genres " +
-                        "order by name_genre ASC")) {
+        try (Connection connection = getDatabaseConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from genres " +
+                                                                      "order by name_genre ASC");
+        ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
                 String name = rs.getString("name_genre");
                 genres.add(name);

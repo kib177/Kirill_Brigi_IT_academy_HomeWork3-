@@ -8,13 +8,16 @@ public class JDBCconnection {
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "1998177";
 
-    public static Connection getDatabaseConnection(){
 
+    static {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("JDBC driver error", e);
         }
+    }
+
+    public static Connection getDatabaseConnection(){
 
         Properties props = new Properties();
         props.setProperty("user", DB_USER);
@@ -30,14 +33,6 @@ public class JDBCconnection {
             throw new RuntimeException("Connect error", e);
         }
         return conn;
-    }
-
-    public static Statement getStatement(Connection connection){
-        try {
-            return connection.createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException("Statement error", e);
-        }
     }
 }
 

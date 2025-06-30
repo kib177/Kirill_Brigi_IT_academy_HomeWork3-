@@ -1,9 +1,7 @@
 package by.HomeWork.connection.modelDAO;
 
 import by.HomeWork.connection.modelDAO.api.IGetResultsDAO;
-import jdk.jshell.execution.LoaderDelegate;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
