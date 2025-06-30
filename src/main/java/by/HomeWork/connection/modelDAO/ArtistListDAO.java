@@ -8,13 +8,13 @@ import java.util.List;
 
 import static by.HomeWork.connection.connectDB.JDBCconnection.*;
 
-public class ArtistListListDAO implements IArtistsListDAO {
+public class ArtistListDAO implements IArtistsListDAO {
     List<String> artists = new ArrayList<>();
 
     @Override
     public List<String> getListForVote(){
-        try(Connection connection = getDatabaseConnection();
-            PreparedStatement statement = connection.prepareStatement("select * from artists " +
+        Connection connection = getDatabaseConnection();
+        try(PreparedStatement statement = connection.prepareStatement("select * from artists " +
                                                                       "order by name_artist ASC");
         ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {

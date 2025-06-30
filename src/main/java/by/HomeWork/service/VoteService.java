@@ -4,7 +4,7 @@ import by.HomeWork.connection.modelDAO.SaveVoteDAO;
 import by.HomeWork.connection.modelDAO.api.IArtistsListDAO;
 import by.HomeWork.connection.modelDAO.api.IGenreListDAO;
 import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
-import by.HomeWork.connection.modelDAO.ArtistListListDAO;
+import by.HomeWork.connection.modelDAO.ArtistListDAO;
 import by.HomeWork.connection.modelDAO.GenresListDAO;
 import by.HomeWork.service.api.IVoteService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class VoteService implements IVoteService {
 
     @Override
     public void getList(HttpServletRequest req){
-        IArtistsListDAO getArtists = new ArtistListListDAO();
+        IArtistsListDAO getArtists = new ArtistListDAO();
         IGenreListDAO getGenres = new GenresListDAO();
 
         req.setAttribute("genres", getGenres.getListForVote());

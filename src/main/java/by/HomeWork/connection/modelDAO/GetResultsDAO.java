@@ -13,8 +13,9 @@ public class GetResultsDAO implements IGetResultsDAO {
 
     // Общий метод для выполнения запросов
     private <T> T executeQuery(String sql, ResultSetProcessor<T> processor, Object... params) {
-        try (Connection connection = getDatabaseConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        Connection connection = getDatabaseConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             // Установка параметров
             for (int i = 0; i < params.length; i++) {

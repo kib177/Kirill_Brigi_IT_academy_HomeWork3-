@@ -13,8 +13,8 @@ public class GenresListDAO implements IGenreListDAO {
 
     @Override
     public List<String> getListForVote() {
-        try (Connection connection = getDatabaseConnection();
-        PreparedStatement statement = connection.prepareStatement("select * from genres " +
+        Connection connection = getDatabaseConnection();
+        try (PreparedStatement statement = connection.prepareStatement("select * from genres " +
                                                                       "order by name_genre ASC");
         ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
