@@ -9,12 +9,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
+
+import static by.HomeWork.service.api.Connection.getDataSource;
 
 @WebServlet("/results")
 public class ResultsServlet extends HttpServlet {
-    IGetResultsDAO resultsDAO = new GetResultsDAO();
+    IGetResultsDAO resultsDAO = new GetResultsDAO(getDataSource());
     IResultService resultService = new ResultService();
 
     @Override

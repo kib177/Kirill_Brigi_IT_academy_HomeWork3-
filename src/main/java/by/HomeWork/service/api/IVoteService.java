@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IVoteService {
     String processVote(HttpServletRequest request);
-    void getList(HttpServletRequest req);
+    List<String> getGenres();
+    List<String> getArtists();
+
 
 }

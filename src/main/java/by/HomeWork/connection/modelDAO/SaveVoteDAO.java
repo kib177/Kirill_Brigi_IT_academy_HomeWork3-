@@ -2,47 +2,56 @@ package by.HomeWork.connection.modelDAO;
 
 import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static by.HomeWork.connection.connectDB.JDBCconnection.*;
-
 public class SaveVoteDAO implements ISaveVoteDAO {
+    private static final String SAVE_VOTE_SQL = "INSERT INTO votes (artist_id, vote_date, about)" +
+            "VALUES ((SELECT id_artist " +
+            "FROM artists " +
+            "WHERE name_artist = ?), ?, ?) " +
+            "RETURNING id_vote";
+    private static final String SAVE_GENRE_SQL = "INSERT INTO vote_genres (vote_id, genre_id)" +
+            "VALUES (?, (SELECT id_genre " +
+            "FROM genres " +
+            "WHERE name_genre = ?))";
+
+    private final DataSource dataSource;
+
+    public SaveVoteDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
-    public void saveVote(String artist, List<String> genres, String about){
-        String sqlvotes = "INSERT INTO votes (artist_id, vote_date, about)" +
-                "VALUES ((SELECT id_artist " +
-                "FROM artists " +
-                "WHERE name_artist = ?), ?, ?) " +
-                "RETURNING id_vote";
+    public void saveVote(String artist, List<String> genres, String about) {
 
-        String sqlVoteGenre = "INSERT INTO vote_genres (vote_id, genre_id)" +
-                "VALUES (?, (SELECT id_genre " +
-                "FROM genres " +
-                "WHERE name_genre = ?))";
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
 
-        Connection connection = getDatabaseConnection();
-        try( PreparedStatement voteStmt = connection.prepareStatement(sqlvotes);
-             PreparedStatement genreStmt = connection.prepareStatement(sqlVoteGenre)){
+            try (PreparedStatement voteStmt = connection.prepareStatement(SAVE_VOTE_SQL);
+                 PreparedStatement genreStmt = connection.prepareStatement(SAVE_GENRE_SQL)) {
 
-            voteStmt.setString(1, artist);
-            voteStmt.setTimestamp(2,
-                    Timestamp.valueOf(LocalDateTime.now()));
-            voteStmt.setString(3, about);
+                voteStmt.setString(1, artist);
+                voteStmt.setTimestamp(2,
+                        Timestamp.valueOf(LocalDateTime.now()));
+                voteStmt.setString(3, about);
 
-            ResultSet rs = voteStmt.executeQuery();
-            if (!rs.next()) throw new SQLException("No ID obtained");
-            long voteId = rs.getLong(1);
+                ResultSet rs = voteStmt.executeQuery();
+                if (!rs.next()) throw new SQLException("No ID obtained");
+                long voteId = rs.getLong(1);
 
-            for (String genre : genres) {
-                genreStmt.setLong(1, voteId);
-                genreStmt.setString(2, genre);
-                genreStmt.addBatch();
+                for (String genre : genres) {
+                    genreStmt.setLong(1, voteId);
+                    genreStmt.setString(2, genre);
+                    genreStmt.addBatch();
+                }
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
             }
-            genreStmt.executeBatch();
-            connection.commit();
         } catch (SQLException e) {
             throw new IllegalArgumentException("Failed to save vote", e);
         }

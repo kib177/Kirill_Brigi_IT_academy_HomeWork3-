@@ -2,21 +2,27 @@ package by.HomeWork.connection.modelDAO;
 
 import by.HomeWork.connection.modelDAO.api.IGenreListDAO;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.HomeWork.connection.connectDB.JDBCconnection.*;
-
 public class GenresListDAO implements IGenreListDAO {
-    List<String> genres = new ArrayList<>();
+    private final String sql = "select * from genres " +
+            "order by name_genre ASC";
+    private final DataSource dataSource;
+
+    public GenresListDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<String> getListForVote() {
-        Connection connection = getDatabaseConnection();
-        try (PreparedStatement statement = connection.prepareStatement("select * from genres " +
-                                                                      "order by name_genre ASC");
-        ResultSet rs = statement.executeQuery()) {
+        List<String> genres = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
                 String name = rs.getString("name_genre");
                 genres.add(name);

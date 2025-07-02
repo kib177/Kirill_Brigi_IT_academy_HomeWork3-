@@ -1,5 +1,8 @@
 package by.HomeWork.controller;
 
+import by.HomeWork.connection.modelDAO.ArtistListDAO;
+import by.HomeWork.connection.modelDAO.GenresListDAO;
+import by.HomeWork.connection.modelDAO.SaveVoteDAO;
 import by.HomeWork.service.VoteService;
 import by.HomeWork.service.api.IVoteService;
 import jakarta.servlet.ServletException;
@@ -10,16 +13,27 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static by.HomeWork.service.api.Connection.getDataSource;
+
 @WebServlet("/vote")
 public class VoteServlet extends HttpServlet {
     private static final String FORM = "form.jsp";
-    IVoteService voteService = new VoteService();
+    private final IVoteService voteService;
+
+    public VoteServlet() {
+        this.voteService = new VoteService(
+                new ArtistListDAO(getDataSource()),
+                new GenresListDAO(getDataSource()),
+                new SaveVoteDAO(getDataSource())
+        );
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        voteService.getList(req);
+        req.setAttribute("genres", voteService.getGenres());
+        req.setAttribute("artists", voteService.getArtists());
         req.getRequestDispatcher(FORM).forward(req, resp);
     }
 
@@ -30,12 +44,10 @@ public class VoteServlet extends HttpServlet {
         String error = voteService.processVote(req);
         if (error != null) {
             req.setAttribute("error", error);
-            voteService.getList(req);
+            doGet(req, resp);
             req.getRequestDispatcher(FORM).forward(req, resp);
             return;
         }
         resp.sendRedirect("results");
         }
-
-
 }

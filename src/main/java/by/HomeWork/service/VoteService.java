@@ -1,18 +1,34 @@
 package by.HomeWork.service;
 
-import by.HomeWork.connection.modelDAO.SaveVoteDAO;
 import by.HomeWork.connection.modelDAO.api.IArtistsListDAO;
 import by.HomeWork.connection.modelDAO.api.IGenreListDAO;
 import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
-import by.HomeWork.connection.modelDAO.ArtistListDAO;
-import by.HomeWork.connection.modelDAO.GenresListDAO;
 import by.HomeWork.service.api.IVoteService;
+import by.HomeWork.service.api.exception.StorageException;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class VoteService implements IVoteService {
-    ISaveVoteDAO saveVoteDAO = new SaveVoteDAO();
+    private final IArtistsListDAO artistDAO;
+    private final IGenreListDAO genreDAO;
+    private final ISaveVoteDAO SaveVoteDAO;
+    private final List<String> validGenres = new ArrayList<>();
+    private final List<String> validArtists = new ArrayList<>();
+
+    public VoteService(IArtistsListDAO artistDAO, IGenreListDAO genreDAO, ISaveVoteDAO SaveVoteDAO) {
+        this.artistDAO = artistDAO;
+        this.genreDAO = genreDAO;
+        this.SaveVoteDAO = SaveVoteDAO;
+        initializeValidData();
+    }
+
+    private void initializeValidData() {
+        validArtists.addAll(artistDAO.getListForVote());
+        validGenres.addAll(genreDAO.getListForVote());
+    }
 
     @Override
     public String processVote(HttpServletRequest req){
@@ -33,19 +49,22 @@ public class VoteService implements IVoteService {
             return "Некорректные значения жанров";
         }
 
-        saveVoteDAO.saveVote(artist,
-                Arrays.asList(genres),
-                about);
-        return null;
+        try {
+            SaveVoteDAO.saveVote(artist, Arrays.asList(genres), about);
+            return null;
+        } catch (StorageException e) {
+            return "Ошибка сохранения данных";
+        }
     }
 
     @Override
-    public void getList(HttpServletRequest req){
-        IArtistsListDAO getArtists = new ArtistListDAO();
-        IGenreListDAO getGenres = new GenresListDAO();
+    public List<String> getGenres() {
+        return validGenres;
+    }
 
-        req.setAttribute("genres", getGenres.getListForVote());
-        req.setAttribute("artists", getArtists.getListForVote());
+    @Override
+    public List<String> getArtists() {
+        return validArtists;
     }
 
 }

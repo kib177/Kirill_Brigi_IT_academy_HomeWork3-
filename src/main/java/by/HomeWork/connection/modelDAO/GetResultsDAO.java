@@ -1,21 +1,26 @@
 package by.HomeWork.connection.modelDAO;
 
 import by.HomeWork.connection.modelDAO.api.IGetResultsDAO;
+import by.HomeWork.service.api.exception.StorageException;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static by.HomeWork.connection.connectDB.JDBCconnection.*;
-
 public class GetResultsDAO implements IGetResultsDAO {
+    private final DataSource dataSource;
+
+    public GetResultsDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     // Общий метод для выполнения запросов
     private <T> T executeQuery(String sql, ResultSetProcessor<T> processor, Object... params) {
-        Connection connection = getDatabaseConnection();
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
 
             // Установка параметров
             for (int i = 0; i < params.length; i++) {
@@ -26,7 +31,7 @@ public class GetResultsDAO implements IGetResultsDAO {
                 return processor.process(rs);
             }
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Failed connection: ", e);
+            throw new StorageException("Проблема с выгрузкой данных: ", e);
         }
     }
 
