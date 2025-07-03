@@ -1,7 +1,7 @@
-package by.HomeWork.connection.modelDAO.api;
+package by.HomeWork.storage.api;
 
 import java.util.List;
 
-public interface ISaveVoteDAO{
+public interface ISaveVote {
     void saveVote(String artist, List<String> genres, String about);
 }

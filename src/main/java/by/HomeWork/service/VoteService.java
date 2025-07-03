@@ -1,8 +1,8 @@
 package by.HomeWork.service;
 
-import by.HomeWork.connection.modelDAO.api.IArtistsListDAO;
-import by.HomeWork.connection.modelDAO.api.IGenreListDAO;
-import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
+import by.HomeWork.storage.storageGetListForForm.api.IArtistsList;
+import by.HomeWork.storage.storageGetListForForm.api.IGenreList;
+import by.HomeWork.storage.api.ISaveVote;
 import by.HomeWork.service.api.IVoteService;
 import by.HomeWork.service.api.exception.StorageException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,13 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class VoteService implements IVoteService {
-    private final IArtistsListDAO artistDAO;
-    private final IGenreListDAO genreDAO;
-    private final ISaveVoteDAO SaveVoteDAO;
+    private final IArtistsList artistDAO;
+    private final IGenreList genreDAO;
+    private final ISaveVote SaveVoteDAO;
     private final List<String> validGenres = new ArrayList<>();
     private final List<String> validArtists = new ArrayList<>();
 
-    public VoteService(IArtistsListDAO artistDAO, IGenreListDAO genreDAO, ISaveVoteDAO SaveVoteDAO) {
+    public VoteService(IArtistsList artistDAO, IGenreList genreDAO, ISaveVote SaveVoteDAO) {
         this.artistDAO = artistDAO;
         this.genreDAO = genreDAO;
         this.SaveVoteDAO = SaveVoteDAO;

@@ -1,8 +1,8 @@
 package by.HomeWork.controller;
 
-import by.HomeWork.connection.modelDAO.ArtistListDAO;
-import by.HomeWork.connection.modelDAO.GenresListDAO;
-import by.HomeWork.connection.modelDAO.SaveVoteDAO;
+import by.HomeWork.storage.storageGetListForForm.ArtistList;
+import by.HomeWork.storage.storageGetListForForm.GenreList;
+import by.HomeWork.storage.SaveVote;
 import by.HomeWork.service.VoteService;
 import by.HomeWork.service.api.IVoteService;
 import jakarta.servlet.ServletException;
@@ -22,9 +22,9 @@ public class VoteServlet extends HttpServlet {
 
     public VoteServlet() {
         this.voteService = new VoteService(
-                new ArtistListDAO(getDataSource()),
-                new GenresListDAO(getDataSource()),
-                new SaveVoteDAO(getDataSource())
+                new ArtistList(getDataSource()),
+                new GenreList(getDataSource()),
+                new SaveVote(getDataSource())
         );
     }
 

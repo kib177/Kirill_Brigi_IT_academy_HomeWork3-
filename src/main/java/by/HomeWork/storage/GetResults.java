@@ -1,6 +1,7 @@
-package by.HomeWork.connection.modelDAO;
+package by.HomeWork.storage;
 
-import by.HomeWork.connection.modelDAO.api.IGetResultsDAO;
+import by.HomeWork.dto.VotingResults;
+import by.HomeWork.storage.api.IGetResults;
 import by.HomeWork.service.api.exception.StorageException;
 
 import javax.sql.DataSource;
@@ -9,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GetResultsDAO implements IGetResultsDAO {
+public class GetResults implements IGetResults {
     private final DataSource dataSource;
 
-    public GetResultsDAO(DataSource dataSource) {
+    public GetResults(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -33,6 +34,15 @@ public class GetResultsDAO implements IGetResultsDAO {
         } catch (SQLException e) {
             throw new StorageException("Проблема с выгрузкой данных: ", e);
         }
+    }
+
+    @Override
+    public VotingResults getAllResults() {
+        return new VotingResults.Builder()
+                .artistVotes(getArtistResults())
+                .genreVotes(getGenreResults())
+                .aboutInfo(getAboutResults())
+                .build();
     }
 
     @FunctionalInterface

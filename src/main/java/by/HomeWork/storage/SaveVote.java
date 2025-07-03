@@ -1,13 +1,14 @@
-package by.HomeWork.connection.modelDAO;
+package by.HomeWork.storage;
 
-import by.HomeWork.connection.modelDAO.api.ISaveVoteDAO;
+import by.HomeWork.service.api.exception.StorageException;
+import by.HomeWork.storage.api.ISaveVote;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class SaveVoteDAO implements ISaveVoteDAO {
+public class SaveVote implements ISaveVote {
     private static final String SAVE_VOTE_SQL = "INSERT INTO votes (artist_id, vote_date, about)" +
             "VALUES ((SELECT id_artist " +
             "FROM artists " +
@@ -20,7 +21,7 @@ public class SaveVoteDAO implements ISaveVoteDAO {
 
     private final DataSource dataSource;
 
-    public SaveVoteDAO(DataSource dataSource) {
+    public SaveVote(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -39,7 +40,7 @@ public class SaveVoteDAO implements ISaveVoteDAO {
                 voteStmt.setString(3, about);
 
                 ResultSet rs = voteStmt.executeQuery();
-                if (!rs.next()) throw new SQLException("No ID obtained");
+                if (!rs.next()) throw new StorageException("No ID obtained");
                 long voteId = rs.getLong(1);
 
                 for (String genre : genres) {
@@ -47,6 +48,7 @@ public class SaveVoteDAO implements ISaveVoteDAO {
                     genreStmt.setString(2, genre);
                     genreStmt.addBatch();
                 }
+                genreStmt.executeBatch(); // без пакета не записывает genre
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();

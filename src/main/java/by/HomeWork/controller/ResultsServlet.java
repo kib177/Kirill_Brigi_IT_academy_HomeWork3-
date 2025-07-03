@@ -1,7 +1,8 @@
 package by.HomeWork.controller;
 
-import by.HomeWork.connection.modelDAO.GetResultsDAO;
-import by.HomeWork.connection.modelDAO.api.IGetResultsDAO;
+import by.HomeWork.dto.VotingResults;
+import by.HomeWork.storage.GetResults;
+import by.HomeWork.storage.api.IGetResults;
 import by.HomeWork.service.ResultService;
 import by.HomeWork.service.api.IResultService;
 import jakarta.servlet.ServletException;
@@ -15,16 +16,17 @@ import static by.HomeWork.service.api.Connection.getDataSource;
 
 @WebServlet("/results")
 public class ResultsServlet extends HttpServlet {
-    IGetResultsDAO resultsDAO = new GetResultsDAO(getDataSource());
+    IGetResults resultsDAO = new GetResults(getDataSource());
     IResultService resultService = new ResultService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        VotingResults results = resultsDAO.getAllResults();
 
-        req.setAttribute("artistResults", resultService.sortResults(resultsDAO.getArtistResults()));
-        req.setAttribute("genreResults", resultService.sortResults(resultsDAO.getGenreResults()));
-        req.setAttribute("aboutResults", resultService.formatAboutResults(resultsDAO.getAboutResults()));
+        req.setAttribute("artistResults", resultService.sortResults(results.getArtistVotes()));
+        req.setAttribute("genreResults", resultService.sortResults(results.getGenreVotes()));
+        req.setAttribute("aboutResults", resultService.formatAboutResults(results.getAboutInfo()));
 
         req.getRequestDispatcher("results.jsp").forward(req, resp);
     }
