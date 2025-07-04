@@ -1,6 +1,6 @@
-package by.HomeWork.storage.storageGetListForForm;
+package by.HomeWork.storage.storageListForm;
 
-import by.HomeWork.storage.storageGetListForForm.api.IArtistsList;
+import by.HomeWork.storage.storageListForm.api.IArtistsList;
 
 import javax.sql.DataSource;
 

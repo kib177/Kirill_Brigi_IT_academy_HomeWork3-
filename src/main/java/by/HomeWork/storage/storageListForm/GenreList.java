@@ -1,6 +1,6 @@
-package by.HomeWork.storage.storageGetListForForm;
+package by.HomeWork.storage.storageListForm;
 
-import by.HomeWork.storage.storageGetListForForm.api.IGenreList;
+import by.HomeWork.storage.storageListForm.api.IGenreList;
 
 import javax.sql.DataSource;
 

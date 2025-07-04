@@ -1,7 +1,7 @@
 package by.HomeWork.controller;
 
-import by.HomeWork.storage.storageGetListForForm.ArtistList;
-import by.HomeWork.storage.storageGetListForForm.GenreList;
+import by.HomeWork.storage.storageListForm.ArtistList;
+import by.HomeWork.storage.storageListForm.GenreList;
 import by.HomeWork.storage.SaveVote;
 import by.HomeWork.service.VoteService;
 import by.HomeWork.service.api.IVoteService;
@@ -45,7 +45,7 @@ public class VoteServlet extends HttpServlet {
         if (error != null) {
             req.setAttribute("error", error);
             doGet(req, resp);
-            req.getRequestDispatcher(FORM).forward(req, resp);
+           // req.getRequestDispatcher(FORM).forward(req, resp);
             return;
         }
         resp.sendRedirect("results");

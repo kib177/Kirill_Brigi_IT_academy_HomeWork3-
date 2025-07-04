@@ -1,4 +1,4 @@
-package by.HomeWork.storage.storageGetListForForm.api;
+package by.HomeWork.storage.storageListForm.api;
 
 import java.util.List;
 

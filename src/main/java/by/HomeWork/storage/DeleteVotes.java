@@ -7,10 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class deleteVotes {
+public class DeleteVotes {
     private final DataSource dataSource;
 
-    public deleteVotes(DataSource dataSource) {
+    public DeleteVotes(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

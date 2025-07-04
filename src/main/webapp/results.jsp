@@ -73,5 +73,6 @@
 </table>
 
 <p><a href="vote">Вернуться к голосованию</a></p>
+<p><a href="delete">Удалить голоса</a></p>
 </body>
 </html>

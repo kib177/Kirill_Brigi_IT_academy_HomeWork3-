@@ -1,7 +1,7 @@
 package by.HomeWork.service;
 
-import by.HomeWork.storage.storageGetListForForm.api.IArtistsList;
-import by.HomeWork.storage.storageGetListForForm.api.IGenreList;
+import by.HomeWork.storage.storageListForm.api.IArtistsList;
+import by.HomeWork.storage.storageListForm.api.IGenreList;
 import by.HomeWork.storage.api.ISaveVote;
 import by.HomeWork.service.api.IVoteService;
 import by.HomeWork.service.api.exception.StorageException;

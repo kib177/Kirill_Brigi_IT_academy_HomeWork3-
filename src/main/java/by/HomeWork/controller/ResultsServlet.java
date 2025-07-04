@@ -16,6 +16,7 @@ import static by.HomeWork.service.api.Connection.getDataSource;
 
 @WebServlet("/results")
 public class ResultsServlet extends HttpServlet {
+    private static final String RESULT= "results.jsp";
     IGetResults resultsDAO = new GetResults(getDataSource());
     IResultService resultService = new ResultService();
 
@@ -28,7 +29,7 @@ public class ResultsServlet extends HttpServlet {
         req.setAttribute("genreResults", resultService.sortResults(results.getGenreVotes()));
         req.setAttribute("aboutResults", resultService.formatAboutResults(results.getAboutInfo()));
 
-        req.getRequestDispatcher("results.jsp").forward(req, resp);
+        req.getRequestDispatcher(RESULT).forward(req, resp);
     }
 
 
