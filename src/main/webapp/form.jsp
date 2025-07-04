@@ -5,12 +5,8 @@
 <html>
 <head>
     <title>Голосование</title>
+    <jsp:include page="additional/style.jsp"></jsp:include>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
         .error {
             color: red;
             margin-bottom: 15px;
@@ -31,9 +27,11 @@
             display: block;
             margin: 5px 0;
         }
+
     </style>
 </head>
 <body>
+<jsp:include page="additional/header.jsp"></jsp:include>
 <h1>Онлайн-голосование</h1>
 
 <%-- Отображение ошибок --%>
@@ -71,5 +69,6 @@
 
     <input type="submit" value="Голосовать">
 </form>
+<jsp:include page="additional/footer.jsp"></jsp:include>
 </body>
 </html>

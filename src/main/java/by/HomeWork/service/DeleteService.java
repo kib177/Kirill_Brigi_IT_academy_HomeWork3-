@@ -13,16 +13,15 @@ public class DeleteService implements IDeleteService {
         DeleteVotes deleteVotes = new DeleteVotes(getDataSource());
 
         String Value1 = req.getParameter("deleteAll");
-        String Value2 = req.getParameter("deleteAll");
+        String Value2 = req.getParameter("aboutList");
 
 
         if (Value1 != null) {
             deleteVotes.deleteAllVotes();
             return true;
         }else if (Value2 != null) {
-
-        }
-        else {
+            return true;
+        }else {
             return false;
         }
     }

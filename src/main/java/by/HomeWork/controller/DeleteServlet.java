@@ -1,7 +1,9 @@
 package by.HomeWork.controller;
 
 import by.HomeWork.service.DeleteService;
+import by.HomeWork.service.ResultService;
 import by.HomeWork.service.api.IDeleteService;
+import by.HomeWork.service.api.IResultService;
 import by.HomeWork.storage.DeleteVotes;
 import by.HomeWork.storage.GetListDelete;
 import by.HomeWork.storage.GetResults;
@@ -21,12 +23,14 @@ public class DeleteServlet extends HttpServlet {
 
     IDeleteService deleteService = new DeleteService();
     GetListDelete delete = new GetListDelete(getDataSource());
+    IResultService resultService = new ResultService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("aboutDelete", delete.getAboutList());
+        req.setAttribute("aboutDelete", resultService
+                .formatAboutResults(delete.getAboutList()));
         req.getRequestDispatcher("deleteVote.jsp").forward(req, resp);
     }
 

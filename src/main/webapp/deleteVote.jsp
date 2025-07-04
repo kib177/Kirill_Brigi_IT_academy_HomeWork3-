@@ -5,8 +5,10 @@
 <html>
 <head>
     <title>Голосование</title>
+    <jsp:include page="additional/style.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="additional/header.jsp"></jsp:include>
 <h1>Удаление Голосов</h1>
 <%-- Отображение ошибок --%>
 <c:if test="${not empty error}">
@@ -35,6 +37,6 @@
 </form>
 
 <p><a href="vote">Вернуться к голосованию</a></p>
-
+<jsp:include page="additional/footer.jsp"></jsp:include>
 </body>
 </html>

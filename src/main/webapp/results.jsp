@@ -5,29 +5,11 @@
 
 <html>
 <head>
-    <title>Результаты</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <title>Голосование</title>
+    <jsp:include page="additional/style.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="additional/header.jsp"></jsp:include>
 <h1>Результаты голосования</h1>
 
 <h2>Лучшие исполнители:</h2>
@@ -74,5 +56,6 @@
 
 <p><a href="vote">Вернуться к голосованию</a></p>
 <p><a href="delete">Удалить голоса</a></p>
+<jsp:include page="additional/footer.jsp"></jsp:include>
 </body>
 </html>
